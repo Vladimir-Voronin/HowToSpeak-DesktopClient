@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HowToSpeak_DesktopClient.Infrastructure.Server;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,13 @@ namespace HowToSpeak_DesktopClient
     /// </summary>
     public partial class App : Application
     {
+        [STAThread]
+        public static void Main()
+        {
+            var application = new App();
+            var server = HTSServer.getInstance(ConfigurationManager.AppSettings.Get("BASE_URL_SERVER"));
+            application.InitializeComponent();
+            application.Run();
+        }
     }
 }

@@ -4,13 +4,17 @@
              xmlns:windows="clr-namespace:HowToSpeak_DesktopClient.MVVM.View.Windows"
              xmlns:subwindows="clr-namespace:HowToSpeak_DesktopClient.MVVM.View.Windows.SubWindows"
              xmlns:vm="clr-namespace:HowToSpeak_DesktopClient.MVVM.ViewModel"
+             xmlns:properties="clr-namespace:HowToSpeak_DesktopClient.Properties"
              xmlns:local="clr-namespace:HowToSpeak_DesktopClient"
              StartupUri="MVVM\View\Windows\RegisterLoginWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Design/Theme/MenuButtonTheme.xaml"/>
+                
             </ResourceDictionary.MergedDictionaries>
+
+            <properties:Settings x:Key="Settings" />
             
             <DataTemplate DataType="{x:Type vm:LoginVM}">
                 <subwindows:LoginPage />

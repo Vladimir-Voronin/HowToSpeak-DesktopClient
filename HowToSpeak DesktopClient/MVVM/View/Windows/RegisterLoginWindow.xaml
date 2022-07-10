@@ -11,19 +11,25 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         ResizeMode="NoResize"
-        Height="320"
+        Height="335"
         Width="260">
     <Window.DataContext>
         <vm:RigisterLoginVM />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="15"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="280"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Button Width="15"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseApplicationCommand}">
+            
+        </Button>
 
-        <Grid Grid.Row="0"
+        <Grid Grid.Row="1"
               Background="Purple">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -47,7 +53,7 @@
         </Grid>
 
 
-        <ContentControl Grid.Row="1"
+        <ContentControl Grid.Row="2"
                         Content="{Binding CurrentView}"
                         HorizontalAlignment="Right">
 

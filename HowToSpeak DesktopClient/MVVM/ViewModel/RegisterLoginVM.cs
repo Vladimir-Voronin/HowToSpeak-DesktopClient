@@ -1,6 +1,7 @@
-﻿using HowToSpeak_DesktopClient.MVVM.ViewModel.Base;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using HowToSpeak_DesktopClient.MVVM.ViewModel.Base;
 using HowToSpeak_DesktopClient.Infrastructure.Command;
+using System.Windows;
 
 namespace HowToSpeak_DesktopClient.MVVM.ViewModel
 {
@@ -42,6 +43,16 @@ namespace HowToSpeak_DesktopClient.MVVM.ViewModel
             CurrentView = LoginVM_v;
         }
 
+        public ICommand CloseApplicationCommand { get; }
+
+        private bool CanCloseApplicationCommandExecute(object p) => true;
+
+        private void OnCloseApplicationCommandExecuted(object p)
+        {
+            //CloseApplicationMethod();
+            Application.Current.MainWindow.Close();
+        }
+
         #endregion
 
         #endregion
@@ -50,6 +61,7 @@ namespace HowToSpeak_DesktopClient.MVVM.ViewModel
         {
             RegisterViewCommand = new ActionCommand(OnRegisterViewCommandExecuted, CanRegisterViewCommandExecute);
             LoginViewCommand = new ActionCommand(OnLoginViewCommandExecuted, CanLoginViewCommandExecute);
+            CloseApplicationCommand = new ActionCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
 
             // Set start screen
             RegisterVM_v = new RegisterVM();

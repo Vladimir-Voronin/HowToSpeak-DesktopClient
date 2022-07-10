@@ -4,9 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
-using System.Security;
 
-namespace HowToSpeak_DesktopClient.Infrastructure.Server
+namespace ServerCheck
 {
     static class HttpWebRequestExtension
     {
@@ -40,23 +39,12 @@ namespace HowToSpeak_DesktopClient.Infrastructure.Server
         public CookieCollection cookies;
         public WebHeaderCollection headers;
         public string status_desctiption;
-        public string json_string;
+        public string text;
 
         public bool IsOk()
         {
             return status;
         }
-
-        public string getJsonByKey(string key)
-        {
-            if (json_string == null)
-                return "";
-            var d = JsonConvert.DeserializeObject<Dictionary<string, string>>(json_string);
-            if (d.ContainsKey(key))
-                return d[key];
-            return "";
-        }
-
     }
 
     class HTSServer
@@ -105,14 +93,12 @@ namespace HowToSpeak_DesktopClient.Infrastructure.Server
             httpWebRequest.Method = "POST";
             httpWebRequest.TryAddCookie(_last_cookies);
 
-            var response = writeJson(httpWebRequest, json);
-            if (!response.IsOk())
-                return response;
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+            }
 
-            response = returnResponse(httpWebRequest);
-            if (!response.IsOk())
-                return response;
-
+            var response = returnResponse(httpWebRequest);
             _last_cookies = response.cookies;
             return response;
         }
@@ -131,55 +117,15 @@ namespace HowToSpeak_DesktopClient.Infrastructure.Server
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
-            var response = writeJson(httpWebRequest, json);
-            if (!response.IsOk())
-                return response;
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+            }
 
-            response = returnResponse(httpWebRequest);
-            if (!response.IsOk())
-                return response;
-
+            var response = returnResponse(httpWebRequest);
             _last_cookies = response.cookies;
             return response;
         }
-
-        private ServerResponse writeJson(HttpWebRequest webRequest, string json)
-        {
-            HttpWebResponse httpResponse = null;
-            ServerResponse serverResponse = new ServerResponse();
-            try
-            {
-                using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
-                {
-                    streamWriter.Write(json);
-                }
-            }
-            catch (WebException e)
-            {
-                httpResponse = (HttpWebResponse)e.Response;
-                serverResponse.status = false;
-
-                if (e.Status == WebExceptionStatus.ProtocolError)
-                {
-                    serverResponse.status_code = httpResponse.StatusCode;
-                    serverResponse.status_desctiption = httpResponse.StatusDescription;
-
-                    using (Stream data = e.Response.GetResponseStream())
-                    using (var reader = new StreamReader(data))
-                    {
-                        string text = reader.ReadToEnd();
-                        serverResponse.json_string = text;
-                    }
-                }
-                else
-                {
-                    serverResponse.json_string = "{\'error\': \'Problems with connection to the server\'}";
-                }
-                return serverResponse;
-            }
-            return serverResponse;
-        }
-
 
         private ServerResponse returnResponse(HttpWebRequest webRequest)
         {
@@ -206,7 +152,7 @@ namespace HowToSpeak_DesktopClient.Infrastructure.Server
                     using (var reader = new StreamReader(data))
                     {
                         string text = reader.ReadToEnd();
-                        serverResponse.json_string = text;
+                        serverResponse.text = text;
                     }
                 }
                 return serverResponse;
@@ -218,11 +164,10 @@ namespace HowToSpeak_DesktopClient.Infrastructure.Server
 
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                serverResponse.json_string = streamReader.ReadToEnd();
+                serverResponse.text = streamReader.ReadToEnd();
             }
 
             return serverResponse;
         }
     }
 }
-

@@ -14,6 +14,7 @@
         <vm:RegisterVM x:Key="RegisterVM" />
     </UserControl.Resources>
 
+
     <Grid Background="Beige">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
@@ -27,25 +28,38 @@
                    FontSize="20">Register Page</TextBlock>
         <TextBlock Grid.Row="1"
                    FontSize="14"
-                   Margin="20,15,20,28">Choose your username</TextBlock>
+                   Margin="20,15,20,42">Choose your username</TextBlock>
         <TextBox Grid.Row="1"
                  Width="220"
                  Height="25"
-                 Margin="0,20,0,0"></TextBox>
+                 Margin="0,20,0,0"
+                 Text="{Binding Username}"></TextBox>
 
         <TextBlock Grid.Row="2"
                    FontSize="14"
-                   Margin="20,15,20,28">Enter your password</TextBlock>
-        <PasswordBox Grid.Row="2"
-                     Width="220"
-                     Height="25"
-                     Margin="0,20,0,0"></PasswordBox>
+                   Margin="20,0,20,43">Choose your password</TextBlock>
+        <TextBox Grid.Row="2"
+                 Width="220"
+                 Height="25"
+                 Margin="20,23,20,32"
+                 Text="{Binding Password}"></TextBox>
+
+        <TextBlock Grid.Row="2"
+                   FontSize="14"
+                   Margin="20,53,20,45"
+                   Grid.RowSpan="2"
+                   Foreground="Red"
+                   Text="{Binding Error}"
+                   TextWrapping="WrapWithOverflow"></TextBlock>
+
 
         <Button Grid.Row="3"
                 Width="100"
                 HorizontalAlignment="Left"
-                Margin="20,10,0,40"
+                Margin="20,40,0,10"
                 Height="30"
-                Background="DarkViolet">Register</Button>
+                Background="DarkViolet"
+                Command="{Binding RegisterCommand}">Register</Button>
+
     </Grid>
 </UserControl>

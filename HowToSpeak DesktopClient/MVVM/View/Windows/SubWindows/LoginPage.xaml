@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HowToSpeak_DesktopClient.MVVM.View.Windows.SubWindows"
              xmlns:vm="clr-namespace:HowToSpeak_DesktopClient.MVVM.ViewModel"
+             xmlns:components="clr-namespace:HowToSpeak_DesktopClient.Design.Components"
              mc:Ignorable="d"
              x:Name="LoginPageName"
              Height="280"
@@ -31,24 +32,34 @@
         <TextBox Grid.Row="1"
                  Width="220"
                  Height="25"
-                 Margin="0,20,0,0"></TextBox>
+                 Margin="0,20,0,0"
+                 Text="{Binding Username, Mode=TwoWay}"></TextBox>
 
         <TextBlock Grid.Row="2"
                    FontSize="14"
-                   Margin="20,15,20,28">Your password</TextBlock>
-        <PasswordBox Grid.Row="2"
-                     Width="220"
-                     Height="25"
-                     Margin="0,20,0,0"></PasswordBox>
+                   Margin="20,0,20,43">Your password</TextBlock>
+        <components:BindablePasswordBox Grid.Row="2"
+                 Width="220"
+                 Height="25"
+                 Margin="20,23,20,32"
+                 Password="{Binding Password}"></components:BindablePasswordBox>
 
+        <TextBlock Grid.Row="2"
+                   FontSize="14"
+                   Margin="20,53,20,45"
+                   Grid.RowSpan="2"
+                   Foreground="Red"
+                   Text="{Binding Error}"
+                   TextWrapping="WrapWithOverflow"></TextBlock>
 
 
         <Button Grid.Row="3"
                 Width="100"
                 HorizontalAlignment="Left"
-                Margin="20,10,0,40"
+                Margin="20,40,0,10"
                 Height="30"
-                Background="DarkViolet">Login</Button>
+                Background="DarkViolet"
+                Command="{Binding LogInCommand}">Login</Button>
 
     </Grid>
 </UserControl>

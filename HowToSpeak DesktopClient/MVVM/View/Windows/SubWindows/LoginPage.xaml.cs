@@ -24,5 +24,10 @@ namespace HowToSpeak_DesktopClient.MVVM.View.Windows.SubWindows
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
